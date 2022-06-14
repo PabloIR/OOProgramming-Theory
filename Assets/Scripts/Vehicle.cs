@@ -5,21 +5,23 @@ using UnityEngine;
 public class Vehicle : MonoBehaviour
 {
     [Header("Vehicle Stats")]
-    [SerializeField] string vehicleName;
-    [SerializeField] float fuelCapacity;
-    [SerializeField] float remainignFuel;
-    [SerializeField] float carryCapacity;
-    [SerializeField] float speed;
-    [SerializeField] Vector3 deliveryDestination;
+    protected static string vehicleType;
+    protected static float fuelCapacity;
+    protected static float remainignFuel;
+    protected static float carryCapacity;
+    protected static float speed;
+    protected static Vector3 deliveryDestination;
     int currentDestination;
 
-    bool moving;
-    bool refueling;
-    bool isReturning;
+    protected static bool moving;
+    protected static bool refueling;
+    protected static bool isReturning;
+
+    protected static Vector3 positiveOffset;
+    protected static Vector3 negativeOffset;
     // Start is called before the first frame update
-    void Start()
+    public void InitializeVehicle()
     {
-        remainignFuel = fuelCapacity;
         moving = true;
         currentDestination = 1;
         PlotRoute();
@@ -51,7 +53,7 @@ public class Vehicle : MonoBehaviour
         }
         else if ((int)destination.x == (int)transform.position.x)
         {
-            transform.position = destination;
+            //transform.position = destination;
             moving = false;
             Debug.Log("Destination reached!");
             refueling = true;
@@ -59,19 +61,19 @@ public class Vehicle : MonoBehaviour
 
     }
 
-    private void MoveTowards(Vector3 destination)
+    public virtual void MoveTowards(Vector3 destination)
     {
         //Save as <lookDirection> the normalized vector of target location minus current location
         Vector3 lookDirection = (destination - transform.position).normalized;
         //Move the vechicle along the <lookDirection> vector at <speed> speed
         transform.position += lookDirection * speed * Time.deltaTime;
         //Drain fuel depending on the speed and carry capacity
-        remainignFuel -= Time.deltaTime * speed * carryCapacity/3;
+        remainignFuel -= Time.deltaTime * speed * carryCapacity / 3;
     }
 
     public void OutOfFuel()
     {
-        Debug.Log(vehicleName + " has run out of fuel. Erasing");
+        Debug.Log(vehicleType + " has run out of fuel. Erasing");
         Destroy(gameObject);
     }
 
@@ -82,7 +84,7 @@ public class Vehicle : MonoBehaviour
             if (remainignFuel < fuelCapacity)
             {
                 GameManager.gameManager.playerMoney -= Time.deltaTime;
-                remainignFuel += Time.deltaTime*3;
+                remainignFuel += Time.deltaTime * 3;
             }
             else
             {
@@ -103,34 +105,45 @@ public class Vehicle : MonoBehaviour
         GameObject tempGO = GameObject.Find("City0" + currentDestination);
         if (!isReturning)
         {
-            if (tempGO != null)
-            {
-                deliveryDestination = tempGO.transform.position + new Vector3(0, 0.5f, 0); ;
-                currentDestination++;
-            }
-            else
-            {
-                Debug.Log("Last Stop!");
-                isReturning = true;
-                currentDestination--;
-                GameManager.gameManager.CalculatePayment(carryCapacity);
-            }
-            moving = true;
+            CalculateOutbound(tempGO);
         }
         else
         {
-            if (tempGO != null)
-            {
-                deliveryDestination = tempGO.transform.position + new Vector3(0, 0.5f, -4);
-                currentDestination--;
-            }
-            else
-            {
-                Debug.Log("First Stop!");
-                isReturning = false;
-                currentDestination++;
-            }
-            moving = true;
+            CalculateInbound(tempGO);
         }
+    }
+
+    void CalculateOutbound(GameObject tempRoute)
+    {
+        if (tempRoute != null)
+        {
+            deliveryDestination = tempRoute.transform.position + positiveOffset;
+            currentDestination++;
+        }
+        else
+        {
+            Debug.Log("Last Stop!");
+            isReturning = true;
+            currentDestination--;
+            GameManager.gameManager.CalculatePayment(carryCapacity);
+        }
+        moving = true;
+    }
+
+    void CalculateInbound(GameObject tempRoute)
+    {
+        if (tempRoute != null)
+        {
+            deliveryDestination = tempRoute.transform.position + negativeOffset;
+            currentDestination--;
+        }
+        else
+        {
+            Debug.Log("First Stop!");
+            isReturning = false;
+            currentDestination++;
+            GameManager.gameManager.CalculatePayment(carryCapacity);
+        }
+        moving = true;
     }
 }
