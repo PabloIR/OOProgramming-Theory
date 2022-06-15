@@ -5,12 +5,13 @@ using UnityEngine;
 // INHERITANCE
 public class Bike : Vehicle
 {
-    string vType = "Bike";
-    float fCapacity = 1;
-    float cCapacity = 1;
-    float speedAmount = 2;
-    Vector3 pOffset = new Vector3(0, 0, 1);
-    Vector3 nOffset = new Vector3(0, 0, -5);
+    [Header("Vehicle Specs")]
+    [SerializeField]string vType = "Bike";
+    [SerializeField]float fCapacity = 1;
+    [SerializeField]float cCapacity = 1;
+    [SerializeField]float speedAmount = 2;
+    [SerializeField]Vector3 pOffset = new Vector3(0, 0, 1);
+    [SerializeField]Vector3 nOffset = new Vector3(0, 0, -5);
     void Start()
     {
         SetVehicleType(vType);

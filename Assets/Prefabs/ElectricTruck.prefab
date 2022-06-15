@@ -625,6 +625,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976737c57406a494bbfccc264b8712e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vType: Electric Truck
+  fCapacity: 100
+  cCapacity: 10
+  speedAmount: 5
+  pOffset: {x: 0, y: 0.5, z: 0}
+  nOffset: {x: 0, y: 0.5, z: -4}
 --- !u!1 &1799408868019104230
 GameObject:
   m_ObjectHideFlags: 0

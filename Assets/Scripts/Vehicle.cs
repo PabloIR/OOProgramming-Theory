@@ -5,11 +5,77 @@ using UnityEngine;
 public class Vehicle : MonoBehaviour
 {
     // ENCAPSULATION
-    public string vehicleType { get; private set; }
-    public float fuelCapacity { get; private set; }
+    private string m_vehicleType = "Default Vehicle";
+    public string vehicleType
+    {
+        get { return m_vehicleType; }
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                vehicleType = "Default Vehicle";
+                Debug.Log("Can't have and empty string name");
+            }
+            else
+            {
+                m_vehicleType = value;
+            }
+        }
+    }
+    //public float fuelCapacity { get; private set; }
+    private float m_fuelCapacity = 1.0f;
+    public float fuelCapacity // delete semicolon
+    {
+        get { return m_fuelCapacity; } // getter returns backing field
+        set
+        {
+            if (value < 1.0f)
+            {
+                Debug.LogError("You can't set fuel capacity so low");
+            }
+            else
+            {
+                m_fuelCapacity = value; // original setter now in if/else statement
+            }
+        } // setter uses backing field
+    }
     public float remainignFuel { get; protected set; }
-    public float carryCapacity { get; private set; }
-    public float speed { get; protected set; }
+    //public float carryCapacity { get; private set; }
+    private float m_carryCapacity = 1.0f;
+    public float carryCapacity // delete semicolon
+    {
+        get { return m_carryCapacity; } // getter returns backing field
+        set
+        {
+            if (value < 1.0f)
+            {
+
+                Debug.LogError("You can't set carry capacity so low");
+            }
+            else
+            {
+                m_carryCapacity = value; // original setter now in if/else statement
+            }
+        } // setter uses backing field
+    }
+    //public float speed { get; protected set; }
+    private float m_speed = 1f;
+    public float speed // delete semicolon
+    {
+        get { return m_speed; } // getter returns backing field
+        set
+        {
+            if (value < 1.0f)
+            {
+
+                Debug.LogError("You can't set the speed so low");
+            }
+            else
+            {
+                m_speed = value; // original setter now in if/else statement
+            }
+        } // setter uses backing field
+    }
     Vector3 deliveryDestination;
     int currentDestination;
 
