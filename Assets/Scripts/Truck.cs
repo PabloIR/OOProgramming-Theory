@@ -2,19 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// INHERITANCE
 public class Truck : Vehicle
 {
+    string vType = "Truck";
+    float fCapacity = 40;
+    float cCapacity = 5;
+    float speedAmount = 3;
+    Vector3 pOffset = new Vector3(0, 0.5f, 0);
+    Vector3 nOffset = new Vector3(0, 0.5f, -4);
     void Start()
     {
-        vehicleType = "Truck";
-        fuelCapacity = 40;
-        carryCapacity = 5;
-        speed = 3;
-        positiveOffset = new Vector3(0, 0.5f, 0);
-        negativeOffset = new Vector3(0, 0.5f, -4);
-        transform.position = new Vector3(-8, 0.5f, 2);
-        remainignFuel = fuelCapacity;
+        SetVehicleType(vType);
+        SetFuelCapacity(fCapacity);
+        SetCarryCapacity(cCapacity);
+        SetSpeed(speedAmount);
+        SetOffset(pOffset, nOffset);
         InitializeVehicle();
+        transform.position = new Vector3(-12, 0.5f, 2);
     }
-
 }
