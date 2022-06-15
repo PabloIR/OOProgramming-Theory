@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager gameManager;
-    public string playerName;
-    public float playerMoney;
-    public float playerScore;
+    public static GameManager gameManager { get; set; }
+    public string playerName { get; set; }
+    public float playerMoney { get; set; }
+    public float playerScore { get; set; }
     float basePay = 25;
 
 
@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        playerMoney = 1100;
+        playerScore = 0;
         //Stores “this” instance of Game manager from any other script and get a link to that specific instance of it
         gameManager = this;
         //Marks the MainManager GameObject attached to this script not to be destroyed when the scene changes.
